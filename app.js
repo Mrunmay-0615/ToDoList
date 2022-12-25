@@ -107,6 +107,29 @@ app.post("/delete", function(req, res){
   
 });
 
+app.get("/:listName", function(req, res){
+  const listName = _.capitalize(req.params.listName);
+  List.findOne({name:listName},function(err, result){
+    if(!err){
+      if(!result){
+        // Create a new list
+        const list = new List({
+          name: listName,
+          items: defaultItems
+        });
+      
+        list.save();
+        res.redirect("/" + listName);
+      }
+      else{
+        // Show an existing list.
+        res.render("list", {listTitle:listName, newListItems: result.items});
+      }
+    }
+  });
+  
+});
+
 app.listen(port, function() {
   console.log("Server started on port " + port);
 });
