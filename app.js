@@ -12,6 +12,9 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+
+mongoose.connect("mongodb+srv://admin-Mrunmay:Prabhakar@cluster0.lsgootn.mongodb.net/toDoListDB", {useNewUrlParser: true});
+
 app.get("/", function(req, res){
   res.send("Hello!!");
 });
