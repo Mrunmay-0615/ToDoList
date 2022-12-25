@@ -63,6 +63,29 @@ app.get("/", function(req, res){
   });
 });
 
+app.post("/", function(req, res){
+
+  const listName = req.body.list;
+  const newItem = new Item({
+    name: req.body.newItem
+  });
+
+  if (listName==="Today"){
+    Item.insertMany([newItem], function(err){
+      if(err){console.log(err);}
+      else {console.log("Successfully added new item.");}
+    });
+    res.redirect("/");
+  }
+  else{
+    List.findOne({name:listName}, function(err, result){
+      result.items.push(newItem);
+      result.save(); 
+      res.redirect("/" + listName);
+    });
+  }
+});
+
 app.listen(port, function() {
   console.log("Server started on port " + port);
 });
